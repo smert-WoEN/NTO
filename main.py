@@ -1,10 +1,7 @@
 import numpy
+import numpy as np
 
-f = open("0")
-a1 = numpy.array([f.readline().split()], dtype=str)
-for i in range(1023):
-    a1 = numpy.append(a1, [f.readline().split()], axis=0)
+a2 = np.genfromtxt("0", delimiter=" ", dtype=str)
 
-print(len(a1))
-
-
+print(len(a2))
+print(a2)
