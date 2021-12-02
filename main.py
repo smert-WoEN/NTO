@@ -3,7 +3,7 @@ import numpy as np
 
 dst = (np.zeros((1024, 1280, 3), dtype=np.uint8))
 for i in range(1024):
-    x = input()
+    x = input().split()
     for j in range(1280):
         a = [x[j][:2], x[j][2:4], x[j][4:]]
         b = [int(a[0], 16), int(a[1], 16), int(a[2], 16)]
@@ -21,7 +21,6 @@ contourRed, img4 = cv2.findContours(hsvRedFilter, mode=cv2.RETR_TREE, method=cv2
 redContourDraw = img.copy()
 cv2.drawContours(image=redContourDraw, contours=contourRed, contourIdx=-1, color=(0, 255, 0), thickness=2,
                  lineType=cv2.LINE_AA)
-print(len(contourRed))
 
 hsvBlueFilter = cv2.inRange(hsv, hsvMinBlue, hsvMaxBlue)
 contourBlue, img6 = cv2.findContours(hsvBlueFilter, mode=cv2.RETR_TREE, method=cv2.CHAIN_APPROX_NONE)
@@ -29,7 +28,6 @@ blueContourDraw = img.copy()
 cv2.drawContours(image=blueContourDraw, contours=contourBlue, contourIdx=-1, color=(0, 255, 0), thickness=2,
                  lineType=cv2.LINE_AA)
 
-print(len(contourBlue))
 if len(contourBlue) > len(contourRed):
     print("B " + str(len(contourBlue)))
 elif len(contourRed) > len(contourBlue):
