@@ -1,0 +1,31 @@
+import math as m
+import sys
+import numpy as n
+
+h = 400
+L1 = 560
+L2 = 515
+L3 = 80
+a = 25
+b = 35
+
+q1, q2, q3, q4, q5, q6 = sys.stdin
+
+x3 = L3*m.sin(q5)*m.sin(q4)
+y3 = L3*m.cos(q5) + L2
+z3 = L3*m.sin(q5)*m.cos(q4)
+
+mt3 = n.matrix([[1,0,0],[0,m.cos(q3),-m.sin(q3)]])
+m3 = n.matrix([x3, y3, z3]) 
+[x2, y2, z2] = mt3*m3
+
+y2 = y2 + L2*m.cos(q3)
+z2 = z2 + L2*m.sin(q3) + b
+
+mt2 = n.matrix([[m.cos(q1), m.cos(q1)*m.cos(q2),-m.cos(q1)*m.cos(q2),m.sin(q1)], 
+                [-m.sin(q1), m.cos(q1)*m.cos(q2),-m.cos(q1)*m.cos(q2),m.cos(q1)],
+                [0, m.sin(q2), m.cos(q2), 0]])
+m2 = n.matrix(x2, y2, z2, a)
+[x1, y1, z1] = mt2*m2
+
+sys.stdout(x1, y1, z1)
