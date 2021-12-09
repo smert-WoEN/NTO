@@ -1,3 +1,5 @@
+import sys
+
 import cv2
 import numpy as np
 
@@ -8,7 +10,9 @@ if __name__ == '__main__':
 cv2.namedWindow("result")  # создаем главное окно
 cv2.namedWindow("settings")  # создаем окно настроек
 
-cap = cv2.imread("assignments.jpg", cv2.IMREAD_COLOR)
+cap = np.array([list(map(lambda x: [int(x[:2], 16), int(x[2:4], 16), int(x[4:], 16)], i.replace("\n", '').split()))
+                for i in np.array(sys.stdin.readlines(), dtype=np.str_)], dtype=np.uint8)
+
 # создаем 6 бегунков для настройки начального и конечного цвета фильтра
 cv2.createTrackbar('h1', 'settings', 0, 255, nothing)
 cv2.createTrackbar('s1', 'settings', 0, 255, nothing)
@@ -19,7 +23,7 @@ cv2.createTrackbar('v2', 'settings', 255, 255, nothing)
 crange = [0, 0, 0, 0, 0, 0]
 
 while True:
-    img = cap
+    img = cv2.GaussianBlur(cap, (65, 65), cv2.BORDER_DEFAULT)
     hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
 
     # считываем значения бегунков

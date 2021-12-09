@@ -1,6 +1,6 @@
 import numpy as np
 from cv2 import cv2
-
+import sys
 if __name__ == '__main__':
     def nothing(*arg):
         pass
@@ -10,18 +10,19 @@ hsvMaxRed = np.array((50, 255, 255), np.uint8)
 hsvMinBlue = np.array((65, 20, 0), np.uint8)
 hsvMaxBlue = np.array((140, 255, 255), np.uint8)
 
-dst = cv2.imread("assignments.jpg", cv2.IMREAD_COLOR)
-img = cv2.GaussianBlur(dst, (5, 5), cv2.BORDER_DEFAULT)
+dst = np.array([list(map(lambda x: [int(x[:2], 16), int(x[2:4], 16), int(x[4:], 16)], i.replace("\n", '').split()))
+                for i in np.array(sys.stdin.readlines(), dtype=np.str_)], dtype=np.uint8)
+img = cv2.GaussianBlur(dst, (165, 165), cv2.BORDER_DEFAULT)
 hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
 hsvRedFilter = cv2.inRange(hsv, hsvMinRed, hsvMaxRed)
-contourRed, img4 = cv2.findContours(hsvRedFilter, mode=cv2.RETR_TREE, method=cv2.CHAIN_APPROX_NONE)
+_, contourRed, _ = cv2.findContours(hsvRedFilter, mode=cv2.RETR_TREE, method=cv2.CHAIN_APPROX_NONE)
 redContourDraw = img.copy()
 cv2.drawContours(image=redContourDraw, contours=contourRed, contourIdx=-1, color=(0, 255, 0), thickness=2,
                  lineType=cv2.LINE_AA)
 print(len(contourRed))
 
 hsvBlueFilter = cv2.inRange(hsv, hsvMinBlue, hsvMaxBlue)
-contourBlue, img6 = cv2.findContours(hsvBlueFilter, mode=cv2.RETR_TREE, method=cv2.CHAIN_APPROX_NONE)
+_, contourBlue, _ = cv2.findContours(hsvBlueFilter, mode=cv2.RETR_TREE, method=cv2.CHAIN_APPROX_NONE)
 blueContourDraw = img.copy()
 cv2.drawContours(image=blueContourDraw, contours=contourBlue, contourIdx=-1, color=(0, 255, 0), thickness=2,
                  lineType=cv2.LINE_AA)
