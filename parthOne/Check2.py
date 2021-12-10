@@ -1,16 +1,9 @@
 import sys
-import math
+from math import *
 
 
-def sign(n):
-    if n > 0:
-        return 1.0
-    elif n < 0:
-        return -1.0
-    return 0.0
-
-
-q = [math.radians(-0), math.radians(0), math.radians(-90), 0, 0, 0]#[math.radians(int(x)) for x in sys.stdin.readline().split()]
+q1 = [(int(x)) for x in sys.stdin.readline().split()]
+q = [radians(x) for x in q1]
 A1 = [-170, 170]
 moveFromCenter = 25
 fromTableToFirstAngle = 400
@@ -31,18 +24,49 @@ YY = 0
 ZZ = 0
 # start Pos сделано до оси A4 ( это вращение)
 Z += fromTableToFirstAngle
-Z -= fromFirstAngleToSecond * math.sin(q[1])
-Z -= fromSecondToThird * math.sin(q[1] + q[2])
-Z += instrumentOffset * math.cos(q[1] + q[2])
-Z += toEndInstrument * 0
+Z -= fromFirstAngleToSecond * sin(q[1])
+Z -= fromSecondToThird * sin(q[1] + q[2])
+Z += instrumentOffset * cos(q[1] + q[2])
+Z -= toEndInstrument * sin(q[1] + q[2] + q[4])
 X += moveFromCenter
-X += fromFirstAngleToSecond * math.cos(q[1]) * math.cos(q[0])
-X += fromSecondToThird * math.cos(q[0]) * math.cos(q[1] + q[2])
-X += instrumentOffset * math.cos(q[0]) * math.sin(q[1] + q[2])
-X += toEndInstrument * 0
-Y += fromFirstAngleToSecond * math.cos(q[1]) * math.sin(q[0])
-Y += fromSecondToThird * math.sin(q[0]) * math.cos(q[1] + q[2])
-Y += instrumentOffset * math.sin(q[0]) * math.sin(q[1] + q[2])
-Y += toEndInstrument * 0
+X += fromFirstAngleToSecond * cos(q[1]) * cos(q[0])
+X += fromSecondToThird * cos(q[0]) * cos(q[1] + q[2])
+X += instrumentOffset * cos(q[0]) * sin(q[1] + q[2])
+X += toEndInstrument * cos(q[1] + q[2] + q[4]) * cos(q[0]) * cos(q[3])
+Y += fromFirstAngleToSecond * cos(q[1]) * sin(q[0])
+Y += fromSecondToThird * sin(q[0]) * cos(q[1] + q[2])
+Y += instrumentOffset * sin(q[0]) * sin(q[1] + q[2])
+Y += toEndInstrument * cos(q[1] + q[2] + q[4]) * sin(q[0]) * cos(q[3])
+ZZ -= q1[0]
+ZZ -= q1[3] * sin(q[1] + q[2])
+ZZ -= q1[4] * sin(q[3]) * cos(q[1] + q[2])
+ZZ -= q1[5] * sin(q[1] + q[2] + q[4] * cos(q[3]))
+XX -= q1[1] * sin(q[0])
+XX -= q1[2] * sin(q[0])
+XX -= q1[3] * cos(q[1] + q[2]) * cos(q[0])
+XX -= q1[4] * sin(q[0] * cos(q[1] + q[2]) + q[3] * sin(q[1] + q[2])) * \
+      cos(q[3] * cos(q[1] + q[2]) + q[0] * sin(q[1] + q[2]))
+XX -= q1[5] * cos(q[0]) * cos(q[1] + q[2] + q[4] * cos(q[3]))
+YY += q1[1] * cos(q[0])
+YY += q1[2] * cos(q[0])
+YY += q1[3] * cos(q[1] + q[2]) * sin(q[0])
+YY += q1[4] * cos(q[0] * cos(q[1] + q[2]) + q[3] * sin(q[1] + q[2])) * \
+      cos(q[3] * cos(q[1] + q[2]) + q[0] * sin(q[1] + q[2]))
+YY += q1[5] * sin(q[0]) * cos(q[1] + q[2] + q[4] * cos(q[3]))
+'''XX += q1[1] * sin(q[0])
+XX += q1[2] * sin(q[0])
+XX -= q1[3] * cos(q[1] + q[2]) * sin(q[0])
+XX -= q1[4] * cos(q[3]) * cos(q[1] + q[2]) * sin(q[0])
+XX -= q1[5] * cos(q[1] + q[2] + q[4]) * cos(q[0]) * sin(q[3])
+YY += q1[1] * cos(q[0])
+YY += q1[2] * cos(q[0])
+YY -= q1[3] * cos(q[1] + q[2]) * cos(q[0])
+YY -= q1[4] * cos(q[3]) * cos(q[1] + q[2]) * cos(q[0])
+YY -= q1[5] * cos(q[1] + q[2] + q[4]) * cos(q[0]) * cos(q[3])
+ZZ -= q1[0]
+ZZ -= q1[3] * sin(q[1] + q[2])
+ZZ -= q1[4] * sin(q[3]) * cos(q[1] + q[2])
+ZZ -= q1[5] * sin(q[3] + q[4]) * cos(q[1] + q[2]) #* sin(q[4])'''
 print(q)
-print(round(X), round(Y), round(Z), XX, YY, ZZ)
+print(X, Y, Z, XX, YY, ZZ)
+print(int(round(X, 5)), int(round(-Y, 5)), int(round(Z, 5)), int(round(XX, 5)), int(round(YY, 5)), int(round(ZZ, 5)))
