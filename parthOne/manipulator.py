@@ -57,12 +57,4 @@ xx = angle(i1, i4)
 yy = angle(j1, j4)
 zz = angle(k1, k4)
 sys.stdout(l1.x, l1.y, l1.z, xx, yy, zz)
-
-
-
-
-
-
-
-
-    
+                                                    
