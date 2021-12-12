@@ -9,10 +9,16 @@ def convertor(x):
 maxZ = 10000
 maxY = -float('inf')
 color = ""
-a = np.genfromtxt("1", delimiter=" ", dtype=np.str_)
+a = np.genfromtxt("1", delimiter=" ", dtype=[('X', np.int32),
+                                                ('Y', np.int32), ('Z', np.int32),
+                                                ('C', '|S6')])
+a = np.array(sorted(a, reverse=True, key=lambda x: x[1]))
 Y = 0
+f1 = 0
 for i in range(len(a)):
     b = a[i]
+    if b[2] == -307:
+        print(a[i])
     if Y - int(b[1]) != 0:
         Y = int(b[1])
     if -int(b[2]) < maxZ:
