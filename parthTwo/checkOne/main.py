@@ -16,6 +16,7 @@ for i in range(len(a)):
     c.extend(convertor(a[i][3]))
     b.append(c)
 a = (np.array(b, dtype=np.int32))
+a = np.array(sorted(a, key=lambda x: (-x[2])))
 h = []
 for i in range(len(a)):
     b = a[i]
