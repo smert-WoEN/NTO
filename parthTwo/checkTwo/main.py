@@ -3,6 +3,7 @@ import time
 
 import numpy as np
 
+s = time.time()
 hsvMinRed = np.array((0, 0, 0), np.uint16)
 hsvMaxRed = np.array((60, 255, 255), np.uint16)
 hsvMinRed2 = np.array((300, 0, 0), np.uint16)
@@ -21,14 +22,14 @@ for i in p.readlines():
         d.append([x[0], x[1]])
 c = np.array(d, dtype=np.int32)
 c = np.unique(c, axis=0)
-c = (sorted(c, key=lambda x: (-x[0], x[1])))
+c = (sorted(c, key=lambda x: (-x[1], x[0])))
 b = [[c[0]]]
 kPrev = [c[0]]
 for i in range(1, len(c)):
     d = c[i]
     f = False
     for j in range(len(kPrev)):
-        if abs(d[0] - kPrev[j][0]) <= 7 and abs(d[1] - kPrev[j][1]) <= 7:
+        if abs(d[0] - kPrev[j][0]) <= 1 and abs(d[1] - kPrev[j][1]) <= 1:
             kPrev[j] = d
             b[j].append(d)
             break
@@ -36,7 +37,7 @@ for i in range(1, len(c)):
         for j in range(len(b)):
             e = b[j]
             for k in e:
-                if abs(d[0] - k[0]) <= 7 and abs(d[1] - k[1]) <= 7:
+                if abs(d[0] - k[0]) <= 6 and abs(d[1] - k[1]) <= 6:
                     kPrev[j] = d
                     b[j].append(d)
                     f = True
@@ -48,8 +49,11 @@ for i in range(1, len(c)):
             kPrev.append(d)
 
 count = 0
+med = 0
 for i in b:
-    if len(i) >= 400:
+    med += len(i)
+med = med / len(b) / 5
+for i in b:
+    if len(i) >= med:
         count += 1
 print(count)
-
