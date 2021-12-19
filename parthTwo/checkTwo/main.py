@@ -16,8 +16,7 @@ d = []
 for i in p.readlines():
     x = [int(a) for a in i.split()]
     h = colorsys.rgb_to_hsv(x[3] / 255.0, x[4] / 255.0, x[5] / 255.0)
-    if x[2] > -400 and ((h[1] * 100.0 - 100.0) ** 2 + (h[2] * 100.0 - 64.0 - 100.0) ** 2) ** 0.5 + \
-            ((h[1] * 100.0 - 100.0) ** 2 + (h[2] * 100.0 + 64.0 - 100.0) ** 2) ** 0.5 < 99 * 2 and \
+    if x[2] > -400 and h[2] * 100 > 5 and 1000 / (h[2] * 100 + 5) - 5 > h[1] and \
             (hsvMinRed[0] < h[0] * 360 < hsvMaxRed[0] or hsvMinRed2[0] < h[0] * 360 < hsvMaxRed2[0]):
         d.append([x[0], x[1]])
 c = np.array(d, dtype=np.int32)
