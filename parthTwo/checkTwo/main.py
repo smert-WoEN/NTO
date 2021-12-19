@@ -29,7 +29,7 @@ for i in range(1, len(c)):
     d = c[i]
     f = False
     for j in range(len(kPrev)):
-        if abs(d[0] - kPrev[j][0]) <= 1 and abs(d[1] - kPrev[j][1]) <= 1:
+        if abs(d[0] - kPrev[j][0]) <= 2 and abs(d[1] - kPrev[j][1]) <= 0:
             kPrev[j] = d
             b[j].append(d)
             break
@@ -37,7 +37,7 @@ for i in range(1, len(c)):
         for j in range(len(b)):
             e = b[j]
             for k in e:
-                if abs(d[0] - k[0]) <= 6 and abs(d[1] - k[1]) <= 6:
+                if abs(d[0] - k[0]) <= 7 and abs(d[1] - k[1]) <= 7:
                     kPrev[j] = d
                     b[j].append(d)
                     f = True
@@ -52,8 +52,8 @@ count = 0
 med = 0
 for i in b:
     med += len(i)
-med = med / len(b) / 5
+med = med / len(b) / 2
 for i in b:
-    if len(i) >= med:
+    if len(i) >= 75:
         count += 1
 print(count)
