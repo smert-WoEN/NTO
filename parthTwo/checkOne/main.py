@@ -21,7 +21,7 @@ h = []
 for i in range(len(a)):
     b = a[i]
     hsv = colorsys.rgb_to_hsv(b[3]/255.0, b[4]/255.0, b[5]/255.0)
-    if b[2] > maxZ and hsv[2] * 100 > 5 and hsv[1] * 100 > 5 and 1000 / (hsv[2] * 100 + 5) - 5 > hsv[1]:
+    if b[2] > maxZ and hsv[1] * 100 > 0 and hsv[2] * 100 > (26 ** 2) / (hsv[1] * 100):
         maxZ = b[2]
         h = hsv
 hsvMinRed = np.array((0, 0, 0), np.uint16)
