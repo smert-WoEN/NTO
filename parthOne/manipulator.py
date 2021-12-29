@@ -1,3 +1,7 @@
+import math as m
+import numpy as n
+
+
 h = 400
 L1 = 560
 L2 = 515
@@ -5,13 +9,13 @@ L3 = 80
 a = 25
 b = 35
 
-
-q1 = float(input())
-q2 = float(input())
-q3 = float(input())
-q4 = float(input())
-q5 = float(input())
-q6 = float(input())
+q = [float(x) for x in input().split()]
+q1 = q[0]
+q2 = q[1]
+q3 = q[2]
+q4 = q[3]
+q5 = q[4]
+q6 = q[5]
 
 l3 = n.matrix([[L3*m.sin(q5)*m.sin(q4)],
              [L3*m.cos(q5) + L2],
