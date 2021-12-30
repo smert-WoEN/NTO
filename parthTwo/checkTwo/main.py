@@ -1,24 +1,24 @@
 import colorsys
 import time
-
+import math
 import numpy as np
 
 s = time.time()
 hsvMinRed = np.array((0, 0, 0), np.uint16)
-hsvMaxRed = np.array((60, 255, 255), np.uint16)
-hsvMinRed2 = np.array((300, 0, 0), np.uint16)
-hsvMaxRed2 = np.array((360, 255, 255), np.uint16)
-hsvMinBlue = np.array((180, 0, 0), np.uint16)
-hsvMaxBlue = np.array((300, 255, 255), np.uint16)
+hsvMaxRed = np.array((20, 255, 255), np.uint16)
+hsvMinRed2 = np.array((340, 0, 0), np.uint16)
+hsvMaxRed2 = np.array((361, 255, 255), np.uint16)
+hsvMinBlue = np.array((195, 0, 0), np.uint16)
+hsvMaxBlue = np.array((285, 255, 255), np.uint16)
 
-p = open("input.txt")
+p = open("1")
 d = []
 for i in p.readlines():
-    x = [int(a) for a in i.split()]
-    h = colorsys.rgb_to_hsv(x[3] / 255.0, x[4] / 255.0, x[5] / 255.0)
-    if x[2] > -400 and h[2] * 100 > 5 and 1000 / (h[2] * 100 + 5) - 5 > h[1] and \
-            (hsvMinRed[0] < h[0] * 360 < hsvMaxRed[0] or hsvMinRed2[0] < h[0] * 360 < hsvMaxRed2[0]):
-        d.append([x[0], x[1]])
+    c = [int(a) for a in i.split()]
+    hls = colorsys.rgb_to_hls(c[3] / 255.0, c[4] / 255.0, c[5] / 255.0)
+    if 15 < hls[1] * 100 < 85 and hls[2] * 100 > 15 and 100 * abs(math.cos(hls[1] * 2 * math.pi)) < hls[2] * 100:
+        if hsvMinRed[0] < hls[0] * 360 < hsvMaxRed[0] or hsvMinRed2[0] < hls[0] * 360 < hsvMaxRed2[0]:
+            d.append([c[0], c[1]])
 c = np.array(d, dtype=np.int32)
 c = np.unique(c, axis=0)
 c = (sorted(c, key=lambda x: (-x[1], x[0])))
@@ -53,6 +53,9 @@ for i in b:
     med += len(i)
 med = med / len(b) / 2
 for i in b:
+    print(len(i))
     if len(i) >= 75:
         count += 1
+print()
 print(count)
+print(med)
