@@ -16,7 +16,7 @@ d = []
 for i in p.readlines():
     c = [int(a) for a in i.split()]
     hls = colorsys.rgb_to_hls(c[3] / 255.0, c[4] / 255.0, c[5] / 255.0)
-    if 15 < hls[1] * 100 < 85 and hls[2] * 100 > 15 and 100 * abs(math.cos(hls[1] * 2 * math.pi)) < hls[2] * 100:
+    if 5 < hls[1] * 100 < 95 and hls[2] * 100 > 5 and 100 * abs(math.cos(hls[1] * 2 * math.pi)) < hls[2] * 100:
         if hsvMinRed[0] < hls[0] * 360 < hsvMaxRed[0] or hsvMinRed2[0] < hls[0] * 360 < hsvMaxRed2[0]:
             d.append([c[0], c[1]])
 c = np.array(d, dtype=np.int32)
@@ -28,7 +28,7 @@ for i in range(1, len(c)):
     d = c[i]
     f = False
     for j in range(len(kPrev)):
-        if abs(d[0] - kPrev[j][0]) <= 2 and abs(d[1] - kPrev[j][1]) <= 0:
+        if abs(d[0] - kPrev[j][0]) <= 1 and abs(d[1] - kPrev[j][1]) <= 0:
             kPrev[j] = d
             b[j].append(d)
             break
@@ -36,7 +36,7 @@ for i in range(1, len(c)):
         for j in range(len(b)):
             e = b[j]
             for k in e:
-                if abs(d[0] - k[0]) <= 7 and abs(d[1] - k[1]) <= 7:
+                if abs(d[0] - k[0]) <= 9 and abs(d[1] - k[1]) <= 5:
                     kPrev[j] = d
                     b[j].append(d)
                     f = True
@@ -54,8 +54,7 @@ for i in b:
 med = med / len(b) / 2
 for i in b:
     print(len(i))
-    if len(i) >= 75:
+    if len(i) >= med:
         count += 1
-print()
 print(count)
 print(med)

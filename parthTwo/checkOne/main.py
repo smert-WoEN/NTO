@@ -1,5 +1,6 @@
 import math
 import time
+import ftplib
 
 import numpy as np
 import colorsys
@@ -11,39 +12,46 @@ def convertor(x):
     return [int(x[:2], 16), int(x[2:4], 16), int(x[4:], 16)]
 
 
-hsvMinRed = np.array((1, 0, 0), np.uint16)
-hsvMaxRed = np.array((45, 255, 255), np.uint16)
-hsvMinRed2 = np.array((315, 0, 0), np.uint16)
+hsvMinRed = np.array((0, 0, 0), np.uint16)
+hsvMaxRed = np.array((20, 255, 255), np.uint16)
+hsvMinRed2 = np.array((340, 0, 0), np.uint16)
 hsvMaxRed2 = np.array((361, 255, 255), np.uint16)
-hsvMinBlue = np.array((195, 0, 0), np.uint16)
-hsvMaxBlue = np.array((285, 255, 255), np.uint16)
+hsvMinBlue = np.array((190, 0, 0), np.uint16)
+hsvMaxBlue = np.array((265, 255, 255), np.uint16)
 b = []
+e = []
 f = open("input.txt")
 for i in f.readlines():
     c = [x for x in i.split()]
     d = [int(c[0]), int(c[1]), int(c[2])]
     d.extend(convertor(c[3]))
+    if d[0] < -200:
+        e.append([d[3], d[4], d[5]])
     b.append(d)
-a = (np.array(b, dtype=np.int32))
-a = np.array(sorted(a, key=lambda x: (-x[1], x[0])))
-maxZ = a[0]
-for i in range(1, len(a)):
-    if a[i][2] > maxZ[2]:
-        maxZ = a[i]
-b = []
-for i in a:
-    if i[2] > maxZ[2] - 6 and maxZ[0] - 10 < i[0] < maxZ[0] + 10 and maxZ[1] - 10 < i[1] < maxZ[1] + 10:
-        hls = colorsys.rgb_to_hsv(i[3] / 255.0, i[4] / 255.0, i[5] / 255.0)
-        if 10 < hls[1] * 100 < 90 and hls[2] * 100 > 10 and 100 * abs(math.cos(hls[1] * 2 * math.pi)) < hls[2] * 100:
-            x = float(hls[0]) * 360
-            if x < 60:
-                x += 360
-            b.append(x)
+a = (np.array(b, dtype=np.float64))
+
+b = np.array(e, dtype=np.float64)
+mean = np.mean(b, axis=0)
+greyCor = sum(mean) / 3
+greyCorNorm = [mean[0] / greyCor, mean[1] / greyCor, mean[2] / greyCor]
+
+maxZ = -1000
+
+h = []
+for b in a:
+    if b[2] > maxZ:
+        hsv = colorsys.rgb_to_hsv((b[3] * greyCorNorm[0]) / 255.0, (b[4] * greyCorNorm[1]) / 255.0, (b[5] * greyCorNorm[2]) / 255.0)
+        if ((hsv[1] * 100.0 - 100.0) ** 2 + (hsv[2] * 100.0 - 64.0 - 100.0) ** 2) ** 0.5 + \
+            ((hsv[1] * 100.0 - 100.0) ** 2 + (hsv[2] * 100.0 + 64.0 - 100.0) ** 2) ** 0.5 < 99 * 2 \
+            and (hsvMinRed[0] < hsv[0] * 360 < hsvMaxRed[0] or hsvMinRed2[0] < hsv[0] * 360 < hsvMaxRed2[0]
+                 or hsvMinBlue[0] < hsv[0] * 360 < hsvMaxBlue[0]):
+            h = hsv
+            maxZ = b[2]
 c = np.array(b, dtype=np.float64)
 d = (np.mean(c))
 colorS = ""
-if d > 300:
-    colorS = 'RED'
-else:
+if hsvMinRed[0] < h[0] * 360 < hsvMaxRed[0] or hsvMinRed2[0] < h[0] * 360 < hsvMaxRed2[0]:
+    colorS = 'REDd'
+elif hsvMinBlue[0] < h[0] * 360 < hsvMaxBlue[0]:
     colorS = 'BLUE'
-print(-maxZ[2], colorS)
+print(int(-maxZ), colorS)

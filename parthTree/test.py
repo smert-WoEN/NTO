@@ -1,4 +1,14 @@
 import numpy as np
+import colorsys
+
+
+a = (colorsys.rgb_to_hsv(100, 110, 190))
+print(a, a[0] * 360, a[1] * 255, a[2])
+a = (colorsys.rgb_to_hsv(100 / 255, 110 / 250, 190 / 250))
+print(a, a[0] * 360, a[1] * 255, a[2] * 255)
+
+
+'''
 def perp( a ) :
     b = np.empty_like(a)
     b[0] = -a[1]
@@ -31,4 +41,4 @@ p2 = np.array( [4.0, 3.0] )
 p3 = np.array( [6.0, 0.0] )
 p4 = np.array( [6.0, 3.0] )
 
-print(seg_intersect(p1, p2, p3, p4))
+print(seg_intersect(p1, p2, p3, p4))'''
