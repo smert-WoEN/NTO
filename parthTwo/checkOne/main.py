@@ -40,9 +40,8 @@ maxZ = -1000
 h = []
 for b in a:
     if b[2] > maxZ:
-        hsv = colorsys.rgb_to_hsv((b[3] * greyCorNorm[0]) / 255.0, (b[4] * greyCorNorm[1]) / 255.0, (b[5] * greyCorNorm[2]) / 255.0)
-        if ((hsv[1] * 100.0 - 100.0) ** 2 + (hsv[2] * 100.0 - 64.0 - 100.0) ** 2) ** 0.5 + \
-            ((hsv[1] * 100.0 - 100.0) ** 2 + (hsv[2] * 100.0 + 64.0 - 100.0) ** 2) ** 0.5 < 99 * 2 \
+        hsv = colorsys.rgb_to_hsv(min(b[3] * greyCorNorm[0], 255.0) / 255.0, min(255.0, b[4] * greyCorNorm[1]) / 255.0, min(255.0, b[5] * greyCorNorm[2]) / 255.0)
+        if hsv[1] * 100 > 25 and hsv[2] * 100 > 25 \
             and (hsvMinRed[0] < hsv[0] * 360 < hsvMaxRed[0] or hsvMinRed2[0] < hsv[0] * 360 < hsvMaxRed2[0]
                  or hsvMinBlue[0] < hsv[0] * 360 < hsvMaxBlue[0]):
             h = hsv
@@ -51,7 +50,7 @@ c = np.array(b, dtype=np.float64)
 d = (np.mean(c))
 colorS = ""
 if hsvMinRed[0] < h[0] * 360 < hsvMaxRed[0] or hsvMinRed2[0] < h[0] * 360 < hsvMaxRed2[0]:
-    colorS = 'REDd'
+    colorS = 'RED'
 elif hsvMinBlue[0] < h[0] * 360 < hsvMaxBlue[0]:
     colorS = 'BLUE'
 print(int(-maxZ), colorS)
