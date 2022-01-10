@@ -11,15 +11,28 @@ hsvMaxRed2 = np.array((361, 255, 255), np.uint16)
 hsvMinBlue = np.array((195, 0, 0), np.uint16)
 hsvMaxBlue = np.array((285, 255, 255), np.uint16)
 
-p = open("1")
 d = []
-for i in p.readlines():
+e = []
+for i in open("1").readlines():
     c = [int(a) for a in i.split()]
-    hls = colorsys.rgb_to_hls(c[3] / 255.0, c[4] / 255.0, c[5] / 255.0)
-    if 5 < hls[1] * 100 < 95 and hls[2] * 100 > 5 and 100 * abs(math.cos(hls[1] * 2 * math.pi)) < hls[2] * 100:
-        if hsvMinRed[0] < hls[0] * 360 < hsvMaxRed[0] or hsvMinRed2[0] < hls[0] * 360 < hsvMaxRed2[0]:
-            d.append([c[0], c[1]])
+    if c[0] < -200:
+        e.append([c[3], c[4], c[5]])
+    d.append(c)
+b = np.array(e, dtype=np.float64)
+mean = np.mean(b, axis=0)
+greyCor = sum(mean) / 3
+greyCorNorm = [mean[0] / greyCor, mean[1] / greyCor, mean[2] / greyCor]
+
 c = np.array(d, dtype=np.int32)
+d = []
+for b in c:
+    hsv = colorsys.rgb_to_hsv(min(b[3] * greyCorNorm[0], 256.0) / 256.0, min(256.0, b[4] * greyCorNorm[1]) / 256.0,
+                              min(256.0, b[5] * greyCorNorm[2]) / 256.0)
+    if (hsv[2] * 100 >= 1600 / (hsv[1] * 100)) and hsv[1] * 100 > 25 and hsv[2] * 100 > 25 \
+            and (hsvMinRed[0] < hsv[0] * 360 < hsvMaxRed[0] or hsvMinRed2[0] < hsv[0] * 360 < hsvMaxRed2[0]
+                 or hsvMinBlue[0] < hsv[0] * 360 < hsvMaxBlue[0]):
+        d.append([b[0], b[1]])
+c = np.array(d, dtype=np.int64)
 c = np.unique(c, axis=0)
 c = (sorted(c, key=lambda x: (-x[1], x[0])))
 b = [[c[0]]]

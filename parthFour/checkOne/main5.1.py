@@ -1,4 +1,4 @@
-import math
+'''import math
 import time
 
 import numpy as np
@@ -106,5 +106,7 @@ else:
 f1 = open("out.txt", 'w')
 for i in a:
     f1.write(str(i[0]) + " " + str(i[1]) + '\n')
-f1.close()
+f1.close()'''
+import random
+print(random.randint(-90, 90))
 
